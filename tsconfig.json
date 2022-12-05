@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+      "module": "CommonJS",
+      "esModuleInterop": true,
+      "target": "ESNext",
+      "moduleResolution": "Node",
+      "outDir": "dist",
+      "forceConsistentCasingInFileNames": true,
+      "noFallthroughCasesInSwitch": true,
+      "isolatedModules": false,
+      "strict": true,
+      "noImplicitAny": true,
+      "useUnknownInCatchVariables": false,
+      "inlineSourceMap": true,
+      "baseUrl": ".",
+      "paths": {
+        "@/db": ["src/utils/db.server.ts"],
+        "@/config/*": ["src/config/*"],
+        "@/types/*": ["src/types/*"],
+        "@/routes/*": ["src/routes/*"],
+        "@/controllers/*": ["/src/controllers/*"]
+      }
+    },
+    "ts-node": {
+        "esm": true
+    },
+    "lib": ["esnext"],
+    "include": ["src"],
+    "exclude": ["node_modules"]
+  }
