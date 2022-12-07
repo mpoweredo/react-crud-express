@@ -7,7 +7,7 @@ enum EAddTodoFields {
 
 const AddTodoValidation = object({
   [EAddTodoFields.TITLE]: string().min(1, 'Title is too short!').required('Field cannot be empty!'),
-  [EAddTodoFields.COMPLETED]: boolean().required()
+  [EAddTodoFields.COMPLETED]: boolean()
 })
 
 type TAddTodoFields = InferType<typeof AddTodoValidation>

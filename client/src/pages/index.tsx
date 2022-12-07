@@ -1,8 +1,12 @@
-import AddTodo from '../components/todos/addTodo/AddTodo'
+import TodoList from '@/components/todos/TodoList'
+import AddTodo from '../components/todos/AddTodo/AddTodo'
 
 const HomePage = () => {
   return (
-    <AddTodo />
+    <>
+      <AddTodo />
+      <TodoList />
+    </>
   )
 }
 
