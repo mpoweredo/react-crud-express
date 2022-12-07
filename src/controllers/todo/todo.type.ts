@@ -3,4 +3,12 @@ interface INewTodo {
   completed: boolean
 }
 
-export type { INewTodo }
+interface ITodo {
+  id: number
+  title: string
+  completed: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type { INewTodo, ITodo }

@@ -4,7 +4,7 @@ import { Response } from 'express'
 import { INewTodo } from './todo.type'
 
 const addTodo = async (req: CustomRequest<INewTodo>, res: Response) => {
-  const { completed, title } = req.body
+  const { completed, title = '' } = req.body
 
   if (!title.trim()) return res.status(400).json({ message: 'Title is required!' })
 
@@ -15,7 +15,9 @@ const addTodo = async (req: CustomRequest<INewTodo>, res: Response) => {
     }
   })
 
-  res.json(addedTodo)
+  console.log(addedTodo)
+
+  res.status(200).json(addedTodo)
 }
 
 export { addTodo }
