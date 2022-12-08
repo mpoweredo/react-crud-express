@@ -15,8 +15,6 @@ const addTodo = async (req: CustomRequest<INewTodo>, res: Response) => {
     }
   })
 
-  console.log(addedTodo)
-
   res.status(200).json(addedTodo)
 }
 
