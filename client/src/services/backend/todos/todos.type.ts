@@ -7,6 +7,18 @@ type TAddTodoArgs = {
 
 type TNewTodoData = ITodoItem
 
+type TDeleteTodoArgs = {
+  id: number
+}
+
+type TDeletedTodoData = ITodoItem
+
 type TGetTodosData = ITodoItem[]
 
-export type { TAddTodoArgs, TNewTodoData, TGetTodosData }
+export type {
+  TAddTodoArgs,
+  TNewTodoData,
+  TGetTodosData,
+  TDeletedTodoData,
+  TDeleteTodoArgs,
+}

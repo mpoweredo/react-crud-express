@@ -1,6 +1,6 @@
 enum EMethod {
   POST = 'POST',
-  DELETE = 'DELETE'
+  DELETE = 'DELETE',
 }
 
 export { EMethod }

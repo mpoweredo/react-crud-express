@@ -1,11 +1,18 @@
 import { EMethod } from '../../services.type'
 import { backendApi } from '../backend'
-import { TAddTodoArgs, TGetTodosData, TNewTodoData } from './todos.type'
+import {
+  TAddTodoArgs,
+  TDeletedTodoData,
+  TDeleteTodoArgs,
+  TGetTodosData,
+  TNewTodoData,
+} from './todos.type'
 
 const todosApi = backendApi.injectEndpoints({
   endpoints: (builder) => ({
     addTodo: builder.mutation<TNewTodoData, TAddTodoArgs>({
       query: ({ newTodo }) => {
+        console.log(newTodo)
         return {
           url: '/todo',
           method: EMethod.POST,
@@ -22,7 +29,18 @@ const todosApi = backendApi.injectEndpoints({
       },
       providesTags: ['Todos'],
     }),
+    deleteTodo: builder.mutation<TDeletedTodoData, TDeleteTodoArgs>({
+      query: ({ id }) => {
+        return {
+          url: '/todo',
+          method: EMethod.DELETE,
+          body: { id },
+        }
+      },
+      invalidatesTags: ['Todos'],
+    }),
   }),
 })
 
-export const { useAddTodoMutation, useGetTodosQuery } = todosApi
+export const { useAddTodoMutation, useGetTodosQuery, useDeleteTodoMutation } =
+  todosApi
