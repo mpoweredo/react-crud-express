@@ -14,7 +14,7 @@ const deleteTodo = async (req: CustomRequest<ITodo>, res: Response) => {
     }
   })
 
-  res.status(200).json(addedTodo)
+  res.status(200).json({ message: 'Todo deleted successfully!' })
 }
 
 export { deleteTodo }
