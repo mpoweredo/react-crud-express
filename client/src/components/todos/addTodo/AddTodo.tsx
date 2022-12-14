@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Stack } from '@chakra-ui/react'
+import { Button, Center, Flex, Stack, useToast } from '@chakra-ui/react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useAddTodoMutation } from 'src/services/backend/todos/todos.api'
 import Checkbox from '../../UI/Checkbox/Checkbox'
@@ -10,24 +10,31 @@ import {
 } from './AddTodo.validation'
 
 const AddTodo = () => {
-  const [addTodo, { isLoading }] = useAddTodoMutation()
+  const [addTodo, { isLoading, status }] = useAddTodoMutation()
 
   const addTodoFormik = useFormik<TAddTodoFields>({
     initialValues: {
       title: '',
       completed: false,
     },
-    onSubmit: ({ title, completed }) => {
+    onSubmit: async ({ title, completed }, { resetForm }) => {
       if (completed === undefined) return
 
       const newTodo = {
         title,
         completed,
       }
-      addTodo({ newTodo })
+
+      try {
+        await addTodo({ newTodo })
+
+        resetForm()
+      } catch (e) {}
     },
     validationSchema: AddTodoValidation,
   })
+
+  console.log(status)
 
   return (
     <FormikProvider value={addTodoFormik}>
@@ -44,11 +51,11 @@ const AddTodo = () => {
               p={3}
               alignItems={'center'}
             >
-              <Center w="full" gap={'.65rem'}>
+              <Center w='full' gap={'.65rem'}>
                 <Flex gap={'1.2rem'} w={'full'}>
                   <Checkbox size={'xl'} name={EAddTodoFields.COMPLETED} />
                   <Input
-                    isDisabled={false}
+                    isDisabled={isLoading}
                     isErrorMessageVisible={false}
                     type={'text'}
                     name={EAddTodoFields.TITLE}
@@ -56,6 +63,7 @@ const AddTodo = () => {
                 </Flex>
               </Center>
               <Button
+                isLoading={isLoading}
                 type={'submit'}
                 size={'md'}
                 w={['full', 'auto']}

@@ -8,14 +8,22 @@ const addTodo = async (req: CustomRequest<INewTodo>, res: Response) => {
 
   if (!title.trim()) return res.status(400).json({ message: 'Title is required!' })
 
-  const addedTodo = await db.todo.create({
-    data: {
-      title,
-      completed
-    }
-  })
+  try {
+    await db.todo.create({
+      data: {
+        title,
+        completed
+      }
+    })
 
-  res.status(200).json(addedTodo)
+    throw Error('asda')
+
+    return res.status(200).json({ message: 'Todo added successfully!' })
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ message: 'Error!', description: 'Something went wrong while adding todo.' })
+    }
+  }
 }
 
 export { addTodo }

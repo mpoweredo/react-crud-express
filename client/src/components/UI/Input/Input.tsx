@@ -8,12 +8,12 @@ import { useField } from 'formik'
 import { EInputKeys, TInputType } from './Input.type'
 
 interface IInputProps {
-  name: string;
-  label?: string;
-  type?: TInputType;
-  placeholder?: string;
-  isErrorMessageVisible?: boolean;
-  isDisabled?: boolean;
+  name: string
+  label?: string
+  type?: TInputType
+  placeholder?: string
+  isErrorMessageVisible?: boolean
+  isDisabled?: boolean
 }
 
 const Input = ({
@@ -30,9 +30,9 @@ const Input = ({
 
   const errorStyles = isError
     ? {
-      borderColor: 'red.300',
-      borderWidth: 1,
-    }
+        borderColor: 'red.300',
+        borderWidth: 1,
+      }
     : {}
 
   return (
@@ -43,15 +43,15 @@ const Input = ({
         placeholder={placeholder}
         {...errorStyles}
         type={type}
-        bg="brand.neutral"
+        bg='brand.neutral'
         _hover={{ bg: 'whiteAlpha.400' }}
         {...field}
         onChange={(e) => setValue(e.target.value)}
-        color="white"
-        variant="filled"
+        color='white'
+        variant='filled'
       />
       {isErrorMessageVisible && isError && (
-        <FormErrorMessage color="red.400">{meta.error}</FormErrorMessage>
+        <FormErrorMessage color='red.400'>{meta.error}</FormErrorMessage>
       )}
     </>
   )

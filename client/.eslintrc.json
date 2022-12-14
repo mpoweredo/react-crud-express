@@ -27,10 +27,6 @@
       "tabWidth": 2,
       "jsxSingleQuote": true
     }],
-    "indent": [
-      "error",
-      2
-    ],
     "linebreak-style": [
       "error",
       "unix"

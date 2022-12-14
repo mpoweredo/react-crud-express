@@ -15,10 +15,18 @@ type TDeletedTodoData = ITodoItem
 
 type TGetTodosData = ITodoItem[]
 
+type TGetTodoArgs = {
+  id: number
+}
+
+type TGetTodoData = ITodoItem
+
 export type {
   TAddTodoArgs,
   TNewTodoData,
   TGetTodosData,
   TDeletedTodoData,
   TDeleteTodoArgs,
+  TGetTodoArgs,
+  TGetTodoData,
 }
