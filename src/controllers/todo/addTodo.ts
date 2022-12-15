@@ -16,8 +16,6 @@ const addTodo = async (req: CustomRequest<INewTodo>, res: Response) => {
       }
     })
 
-    throw Error('asda')
-
     return res.status(200).json({ message: 'Todo added successfully!' })
   } catch (error) {
     if (error instanceof Error) {
