@@ -9,8 +9,6 @@ import { openSnackbar } from 'store/snackbar/snackbarSlice'
 
 export const snackbarLogger: Middleware =
   (api: MiddlewareAPI) => (next) => (action) => {
-    console.log(action)
-
     if (isRejectedWithValue(action)) {
       if (action.payload.data.message) {
         api.dispatch(

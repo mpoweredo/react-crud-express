@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Stack, useToast } from '@chakra-ui/react'
+import { Button, Center, Flex, Stack } from '@chakra-ui/react'
 import { Form, FormikProvider, useFormik } from 'formik'
 import { useAddTodoMutation } from 'src/services/backend/todos/todos.api'
 import Checkbox from '../../UI/Checkbox/Checkbox'
@@ -10,7 +10,7 @@ import {
 } from './AddTodo.validation'
 
 const AddTodo = () => {
-  const [addTodo, { isLoading, status }] = useAddTodoMutation()
+  const [addTodo, { isLoading }] = useAddTodoMutation()
 
   const addTodoFormik = useFormik<TAddTodoFields>({
     initialValues: {
@@ -25,16 +25,12 @@ const AddTodo = () => {
         completed,
       }
 
-      try {
-        await addTodo({ newTodo })
-
-        resetForm()
-      } catch (e) {}
+      await addTodo({ newTodo })
+        .unwrap()
+        .then(() => resetForm())
     },
     validationSchema: AddTodoValidation,
   })
-
-  console.log(status)
 
   return (
     <FormikProvider value={addTodoFormik}>

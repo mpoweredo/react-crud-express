@@ -63,7 +63,11 @@ const TodoItem = ({ id, completed, title, createdAt }: ITodoItem) => {
           </Flex>
         </Stack>
       </Flex>
-      <TodoItemEdit isOpen={isOpen} onClose={onClose} />
+      <TodoItemEdit
+        isOpen={isOpen}
+        onClose={onClose}
+        todo={{ completed, title, id }}
+      />
     </>
   )
 }

@@ -7,14 +7,13 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const sizes = {
   xl: definePartsStyle({
     control: defineStyle({
-      boxSize: 8
+      boxSize: 8,
     }),
     label: defineStyle({
       fontSize: '2xl',
-      marginLeft: 6
-    })
+      marginLeft: 6,
+    }),
   }),
 }
-
 
 export const checkboxTheme = defineMultiStyleConfig({ sizes })

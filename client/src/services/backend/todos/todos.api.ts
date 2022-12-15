@@ -1,20 +1,15 @@
 import { EMethod } from '../../services.type'
 import { backendApi } from '../backend'
-import {
-  TAddTodoArgs,
-  TDeletedTodoData,
-  TDeleteTodoArgs,
-  TGetTodoArgs,
-  TGetTodoData,
-  TGetTodosData,
-  TNewTodoData,
-} from './todos.type'
-import { v4 as uuidv4 } from 'uuid'
 import { ITodoItem } from '@/components/todos/TodoItem/TodoItem.type'
+import { INewTodo } from '@/components/todos/AddTodo/AddTodo.type'
+
+type TUpdateTodoArgs = {
+  updatedTodo: Pick<ITodoItem, 'title' | 'completed' | 'id'>
+}
 
 const todosApi = backendApi.injectEndpoints({
   endpoints: (builder) => ({
-    getTodos: builder.query<TGetTodosData, void>({
+    getTodos: builder.query<ITodoItem[], void>({
       query: () => {
         return {
           url: '/todo',
@@ -23,7 +18,7 @@ const todosApi = backendApi.injectEndpoints({
       providesTags: ['Todos'],
     }),
 
-    getTodo: builder.query<TGetTodoData, TGetTodoArgs>({
+    getTodo: builder.query<ITodoItem, { id: number }>({
       query: ({ id }) => {
         return {
           url: `/todo/${id}`,
@@ -32,7 +27,7 @@ const todosApi = backendApi.injectEndpoints({
       providesTags: ['Todos'],
     }),
 
-    addTodo: builder.mutation<TNewTodoData, Partial<TAddTodoArgs>>({
+    addTodo: builder.mutation<void, { newTodo: INewTodo }>({
       query: ({ newTodo }) => {
         return {
           url: '/todo',
@@ -40,38 +35,26 @@ const todosApi = backendApi.injectEndpoints({
           body: newTodo,
         }
       },
-
-      // async onQueryStarted({ ...patch }, { dispatch, queryFulfilled }) {
-      //   const patchResult = dispatch(
-      //     backendApi.util.updateQueryData(
-      //       'getTodos',
-      //       uuidv4(),
-      //       (draft: ITodoItem[]) => {
-      //         Object.assign(draft, patch)
-      //       }
-      //     )
-      //   )
-      //   try {
-      //     await queryFulfilled
-      //   } catch {
-      //     patchResult.undo()
-
-      //     /**
-      //      * Alternatively, on failure you can invalidate the corresponding cache tags
-      //      * to trigger a re-fetch:
-      //      * dispatch(api.util.invalidateTags(['Post']))
-      //      */
-      //   }
-      // },
       invalidatesTags: ['Todos'],
     }),
 
-    deleteTodo: builder.mutation<TDeletedTodoData, TDeleteTodoArgs>({
+    deleteTodo: builder.mutation<void, { id: number }>({
       query: ({ id }) => {
         return {
           url: '/todo',
           method: EMethod.DELETE,
           body: { id },
+        }
+      },
+      invalidatesTags: ['Todos'],
+    }),
+
+    editTodo: builder.mutation<void, TUpdateTodoArgs>({
+      query: ({ updatedTodo }) => {
+        return {
+          url: '/todo',
+          method: EMethod.PATCH,
+          body: updatedTodo,
         }
       },
       invalidatesTags: ['Todos'],
@@ -84,4 +67,5 @@ export const {
   useGetTodosQuery,
   useDeleteTodoMutation,
   useGetTodoQuery,
+  useEditTodoMutation,
 } = todosApi

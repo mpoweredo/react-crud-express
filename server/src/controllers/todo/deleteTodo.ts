@@ -8,13 +8,19 @@ const deleteTodo = async (req: CustomRequest<ITodo>, res: Response) => {
 
   if (!id) return res.status(400).json({ message: 'No id provided!' })
 
-  const addedTodo = await db.todo.delete({
-    where: {
-      id,
-    }
-  })
+  try {
+    await db.todo.delete({
+      where: {
+        id,
+      }
+    })
 
-  res.status(200).json({ message: 'Todo deleted successfully!' })
+    res.status(200).json({ message: 'Todo deleted successfully!' })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ message: 'Something went wrong while deleting todo!' })
+    }
+  }
 }
 
 export { deleteTodo }

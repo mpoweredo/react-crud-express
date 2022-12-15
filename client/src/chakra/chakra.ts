@@ -6,8 +6,8 @@ const colors = {
     primary: '#0D120E',
     secondary: '#232826',
     neutral: '#3c413f',
-    accent: '#1da756'
-  }
+    accent: '#1da756',
+  },
 }
 
 const theme = extendTheme({
@@ -17,7 +17,7 @@ const theme = extendTheme({
     global: () => ({
       body: {
         bg: 'brand.primary',
-        color: 'white'
+        color: 'white',
       },
     }),
   },
