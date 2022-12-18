@@ -1,11 +1,6 @@
-import {
-  FormErrorMessage,
-  FormLabel,
-  Input as ChakraInput,
-  Text,
-} from '@chakra-ui/react'
+import { FormLabel, Input as ChakraInput, Text, Stack } from '@chakra-ui/react'
 import { useField } from 'formik'
-import { EInputKeys, TInputType } from './Input.type'
+import { TInputType } from './Input.type'
 
 interface IInputProps {
   name: string
@@ -36,8 +31,8 @@ const Input = ({
     : {}
 
   return (
-    <>
-      {label && <FormLabel>{label}</FormLabel>}
+    <Stack spacing={1} direction={'column'}>
+      {label && <FormLabel fontSize={'xl'}>{label}</FormLabel>}
       <ChakraInput
         isDisabled={isDisabled}
         placeholder={placeholder}
@@ -51,9 +46,9 @@ const Input = ({
         variant='filled'
       />
       {isErrorMessageVisible && isError && (
-        <FormErrorMessage color='red.400'>{meta.error}</FormErrorMessage>
+        <Text color='red.400'>{meta.error}</Text>
       )}
-    </>
+    </Stack>
   )
 }
 

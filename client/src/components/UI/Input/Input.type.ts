@@ -1,7 +1,8 @@
 enum EInputKeys {
   checkbox = 'checkbox',
   text = 'text',
-  password = 'password'
+  password = 'password',
+  email = 'email',
 }
 
 type TInputType = keyof typeof EInputKeys
