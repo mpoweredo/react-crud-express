@@ -1,7 +1,4 @@
-import {
-  useDeleteTodoMutation,
-  useGetTodoQuery,
-} from '@/backend/todos/todos.api'
+import { useDeleteTodoMutation } from '@/backend/todos/todos.api'
 import {
   Button,
   Flex,

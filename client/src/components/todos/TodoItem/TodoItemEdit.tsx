@@ -29,6 +29,8 @@ interface ITodoItemProps {
 const TodoItemEdit = ({ isOpen, onClose, todo }: ITodoItemProps) => {
   const [editTodo, { isLoading }] = useEditTodoMutation()
 
+  console.log(todo.title)
+
   const editTodoFormik = useFormik<TAddTodoFields>({
     initialValues: {
       title: todo.title,
@@ -51,6 +53,7 @@ const TodoItemEdit = ({ isOpen, onClose, todo }: ITodoItemProps) => {
         })
     },
     validationSchema: AddTodoValidation,
+    enableReinitialize: true,
   })
 
   return (
