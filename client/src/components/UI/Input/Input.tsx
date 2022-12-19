@@ -31,8 +31,12 @@ const Input = ({
     : {}
 
   return (
-    <Stack spacing={1} direction={'column'}>
-      {label && <FormLabel fontSize={'xl'}>{label}</FormLabel>}
+    <Stack spacing={1} direction={'column'} w={'full'}>
+      {label && (
+        <FormLabel m={0} fontSize={'xl'}>
+          {label}
+        </FormLabel>
+      )}
       <ChakraInput
         isDisabled={isDisabled}
         placeholder={placeholder}
