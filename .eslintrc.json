@@ -5,7 +5,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "overrides": [],
   "parser": "@typescript-eslint/parser",
@@ -14,9 +15,17 @@
     "sourceType": "module"
   },
   "plugins": [
+    "prettier",
     "@typescript-eslint"
   ],
   "rules": {
+    "prettier/prettier": ["error", {
+      "semi": false,
+      "singleQuote": true,
+      "useTabs": false,
+      "endOfLine": "auto",
+      "tabWidth": 2
+    }],
     "indent": [
       "error",
       2
