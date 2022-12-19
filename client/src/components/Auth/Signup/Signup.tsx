@@ -7,15 +7,20 @@ import {
   SignupValidation,
   TSignupFields,
 } from './Signup.validation'
+import { useSignupMutation } from '@/backend/auth/auth.api'
 
 const Signup = () => {
+  const [signup, { isLoading }] = useSignupMutation()
+
   const signinFormik = useFormik<TSignupFields>({
     initialValues: {
       name: '',
       email: '',
       password: '',
     },
-    onSubmit: (values) => console.log(values),
+    onSubmit: async (values) => {
+      await signup(values)
+    },
     validationSchema: SignupValidation,
   })
 
@@ -60,7 +65,7 @@ const Signup = () => {
               </Text>
             </Text>
           </Stack>
-          <Button type='submit' colorScheme={'teal'}>
+          <Button isDisabled={isLoading} type='submit' colorScheme={'teal'}>
             Sign up
           </Button>
         </Stack>

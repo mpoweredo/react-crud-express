@@ -7,10 +7,9 @@ enum ESignupFields {
 }
 
 const SignupValidation = object({
-  [ESignupFields.NAME]: string().min(
-    3,
-    'Name should have atleast 3 characters!'
-  ),
+  [ESignupFields.NAME]: string()
+    .min(3, 'Name should have atleast 3 characters!')
+    .required('Name is required!'),
   [ESignupFields.EMAIL]: string()
     .email('Thats not an email!')
     .required('Email is required!'),
