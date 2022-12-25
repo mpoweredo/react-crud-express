@@ -4,4 +4,14 @@ type TSignup = {
   password: string
 }
 
-export type { TSignup }
+type TSignin = {
+  email: string
+  password: string
+}
+
+type TUserData = {
+  name: string
+  email: string
+}
+
+export type { TSignup, TSignin, TUserData }

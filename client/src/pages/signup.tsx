@@ -1,7 +1,7 @@
 import Signup from '@/components/Auth/Signup/Signup'
 import { Flex, Center } from '@chakra-ui/react'
 
-const signup = () => {
+const SignupPage = () => {
   return (
     <Flex h={'100vh'}>
       <Center flexGrow={1}>
@@ -11,4 +11,4 @@ const signup = () => {
   )
 }
 
-export default signup
+export default SignupPage

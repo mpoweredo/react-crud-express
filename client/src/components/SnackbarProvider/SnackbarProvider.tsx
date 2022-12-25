@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react'
 import { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from 'store/hooks'
-import { closeSnackbar, selectSnackbar } from 'store/snackbar/snackbarSlice'
+import { useAppDispatch, useAppSelector } from 'src/store/hooks'
+import { closeSnackbar, selectSnackbar } from 'src/store/snackbar/snackbarSlice'
 import { SNACKBAR_DURATION } from './SnackbarProvider.const'
 
 const SnackbarProvider = () => {

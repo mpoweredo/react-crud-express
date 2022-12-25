@@ -1,50 +1,46 @@
 import { CustomRequest } from '@/types/customRequest'
-import { TSignup } from './auth.type'
+import { TSignin } from './auth.type'
 import { db } from '@/db'
-import { hashSync } from 'bcrypt'
+import { compareSync } from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { CustomResponse } from '@/types/customResponse'
 
 // eslint-disable-next-line
 const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
-const signup = async (req: CustomRequest<TSignup>, res: CustomResponse) => {
-  const { name, email, password } = req.body
+const signin = async (req: CustomRequest<TSignin>, res: CustomResponse) => {
+  const { email, password } = req.body
 
-  if (!name.trim())
-    return res.status(400).json({ message: 'Name is required!' })
   if (!emailRegex.test(email))
     return res.status(400).json({ message: 'Thats not an email!' })
   if (!password.trim() || password.length < 8)
     return res.status(400).json({
       message: 'Error!',
-      description: 'Password should contain atleast 8 characters',
+      description: 'Password should contain at least 8 characters',
     })
 
   try {
-    const existingUser = await db.user.findFirst({
+    const foundUser = await db.user.findFirst({
       where: {
         email,
       },
     })
 
-    if (existingUser)
+    if (!foundUser)
       return res.status(400).json({
         message: 'Error!',
-        description: 'Account with this email already exists!',
+        description: 'Credentials are invalid!',
       })
 
-    const hashedPassword = hashSync(password, 12)
+    const { password: hashedPassword, ...user } = foundUser
 
-    const createdUser = await db.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      },
-    })
+    const isPasswordCorrect = compareSync(password, hashedPassword)
 
-    const { password: _, ...user } = createdUser
+    if (!isPasswordCorrect)
+      return res.status(400).json({
+        message: 'Error!',
+        description: 'Credentials are invalid!',
+      })
 
     const accessToken = jwt.sign(
       user,
@@ -73,7 +69,7 @@ const signup = async (req: CustomRequest<TSignup>, res: CustomResponse) => {
       token: accessToken,
       user,
       message: 'Success!',
-      description: 'Created account successfully!',
+      description: 'Signed in successfully!',
     })
   } catch (error) {
     if (error instanceof Error) {
@@ -84,4 +80,4 @@ const signup = async (req: CustomRequest<TSignup>, res: CustomResponse) => {
   }
 }
 
-export { signup }
+export { signin }

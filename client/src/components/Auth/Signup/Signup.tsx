@@ -8,9 +8,12 @@ import {
   TSignupFields,
 } from './Signup.validation'
 import { useSignupMutation } from '@/backend/auth/auth.api'
+import { useRouter } from 'next/router'
 
 const Signup = () => {
   const [signup, { isLoading }] = useSignupMutation()
+
+  const { push } = useRouter()
 
   const signinFormik = useFormik<TSignupFields>({
     initialValues: {
@@ -18,8 +21,19 @@ const Signup = () => {
       email: '',
       password: '',
     },
-    onSubmit: async (values) => {
-      await signup(values)
+    onSubmit: async (values, { setFieldValue, setFieldTouched }) => {
+      const response = await signup(values)
+
+      const isError = 'error' in response
+
+      if (isError) {
+        setFieldValue('password', '')
+        setFieldTouched('password', false)
+
+        return
+      }
+
+      push('/')
     },
     validationSchema: SignupValidation,
   })
@@ -65,7 +79,7 @@ const Signup = () => {
               </Text>
             </Text>
           </Stack>
-          <Button isDisabled={isLoading} type='submit' colorScheme={'teal'}>
+          <Button isLoading={isLoading} type='submit' colorScheme={'teal'}>
             Sign up
           </Button>
         </Stack>

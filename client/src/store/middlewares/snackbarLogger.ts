@@ -1,6 +1,6 @@
 import { isRejectedWithValue, isFulfilled } from '@reduxjs/toolkit'
 import type { MiddlewareAPI, Middleware } from '@reduxjs/toolkit'
-import { openSnackbar } from 'store/snackbar/snackbarSlice'
+import { openSnackbar } from 'src/store/snackbar/snackbarSlice'
 
 // type TSnackbarLoggerPayload = {
 //   message: string
@@ -20,14 +20,6 @@ export const snackbarLogger: Middleware =
         )
         return next(action)
       }
-
-      api.dispatch(
-        openSnackbar({
-          title: 'Error!',
-          description: 'Something went wrong. Try again later!',
-          type: 'error',
-        })
-      )
     }
 
     if (isFulfilled(action) && action.payload.message) {

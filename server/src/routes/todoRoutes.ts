@@ -4,8 +4,11 @@ import { deleteTodo } from 'src/controllers/todo/deleteTodo'
 import { editTodo } from 'src/controllers/todo/editTodo'
 import { getTodo } from 'src/controllers/todo/getTodo'
 import { getTodos } from 'src/controllers/todo/getTodos'
+import { verifyJWT } from '../middlewares/verifyJWT'
 
 const router = express.Router()
+
+router.use(verifyJWT)
 
 router.route('/').post(addTodo).get(getTodos).delete(deleteTodo).patch(editTodo)
 

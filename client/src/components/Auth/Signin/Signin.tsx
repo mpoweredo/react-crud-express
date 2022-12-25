@@ -7,14 +7,33 @@ import {
 } from './Signin.validation'
 import Input from '@/components/UI/Input/Input'
 import Link from 'next/link'
+import { useSigninMutation } from '@/backend/auth/auth.api'
+import { useRouter } from 'next/router'
 
 const Signin = () => {
+  const [signin, { isLoading }] = useSigninMutation()
+
+  const { push } = useRouter()
+
   const signinFormik = useFormik<TSigninFields>({
     initialValues: {
       email: '',
       password: '',
     },
-    onSubmit: (values) => console.log(values),
+    onSubmit: async (values, { setFieldValue, setFieldTouched }) => {
+      const response = await signin(values)
+
+      const isError = 'error' in response
+
+      if (isError) {
+        setFieldValue('password', '')
+        setFieldTouched('password', false)
+
+        return
+      }
+
+      push('/')
+    },
     validationSchema: SigninValidation,
   })
 
@@ -54,7 +73,7 @@ const Signin = () => {
               </Text>
             </Text>
           </Stack>
-          <Button type='submit' colorScheme={'teal'}>
+          <Button isLoading={isLoading} type='submit' colorScheme={'teal'}>
             Sign in
           </Button>
         </Stack>
