@@ -4,25 +4,18 @@ import { TUserData } from './auth.type'
 import { db } from '@/db'
 
 const refreshToken = async (req: Request, res: Response) => {
-  const cookies = req.cookies
+  const refreshTokenCookie = req.cookies.jwt as string
 
-  if (!cookies.jwt) return res.sendStatus(403)
-
-  const refreshTokenCookie = cookies.jwt
+  if (!refreshTokenCookie) return res.sendStatus(401)
 
   jwt.verify(
     refreshTokenCookie,
     process.env.REFRESH_TOKEN_SECRET as string,
 
-    // @ts-expect-error FIXME: fix ts errors
+    // @ts-expect-error todo: fix ts errors
     async (error: VerifyErrors | null, decoded: TUserData) => {
       if (error) {
-        res.clearCookie('jwt', {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-        })
-        res.sendStatus(403)
+        res.sendStatus(401)
 
         return
       }
@@ -33,7 +26,7 @@ const refreshToken = async (req: Request, res: Response) => {
         },
       })
 
-      if (!foundUser) return res.sendStatus(403)
+      if (!foundUser) return res.sendStatus(401)
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _, ...user } = foundUser
@@ -43,7 +36,7 @@ const refreshToken = async (req: Request, res: Response) => {
           email: user.email,
         },
         process.env.ACCESS_TOKEN_SECRET as string,
-        { expiresIn: '10s' }
+        { expiresIn: '60d' }
       )
       res.status(200).json({ token: accessToken, user })
     }
