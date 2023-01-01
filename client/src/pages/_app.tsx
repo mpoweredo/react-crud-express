@@ -4,6 +4,7 @@ import { theme } from '../chakra/chakra'
 import { Provider } from 'react-redux'
 import { wrapper } from 'src/store/store'
 import SnackbarProvider from '@/components/SnackbarProvider/SnackbarProvider'
+import AuthProvider from '@/components/Auth/AuthProvider/AuthProvider'
 
 export default function App({ Component, ...rest }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(rest)
@@ -11,7 +12,9 @@ export default function App({ Component, ...rest }: AppProps) {
   return (
     <Provider store={store}>
       <ChakraProvider theme={theme}>
-        <Component {...props.pageProps} />
+        <AuthProvider>
+          <Component {...props.pageProps} />
+        </AuthProvider>
         <SnackbarProvider />
       </ChakraProvider>
     </Provider>

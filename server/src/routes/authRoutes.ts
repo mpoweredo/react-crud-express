@@ -13,6 +13,6 @@ router.route('/signin').post(loginLimiter, signin)
 
 router.route('/refresh').get(refreshToken)
 
-router.route('/signout').post(signout)
+router.route('/signout').get(signout)
 
 export { router as authRoute }

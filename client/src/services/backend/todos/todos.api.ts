@@ -7,7 +7,7 @@ type TUpdateTodoArgs = {
   updatedTodo: Pick<ITodoItem, 'title' | 'completed' | 'id'>
 }
 
-const todosApi = backendApi.injectEndpoints({
+export const todosApi = backendApi.injectEndpoints({
   endpoints: (builder) => ({
     getTodos: builder.query<ITodoItem[], void>({
       query: () => {
@@ -68,4 +68,7 @@ export const {
   useDeleteTodoMutation,
   useGetTodoQuery,
   useEditTodoMutation,
+  util: { getRunningOperationPromises },
 } = todosApi
+
+export const { getTodos } = todosApi.endpoints

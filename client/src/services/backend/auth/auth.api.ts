@@ -1,6 +1,6 @@
 import { EMethod } from 'src/services/services.type'
 import { backendApi } from '../backend'
-import { setCredentials } from '../../../store/auth/authSlice'
+import { logout, setCredentials } from '../../../store/auth/authSlice'
 import { TAuthState } from '../../../store/auth/authSlice.type'
 import { TSigninData, TSignupData } from '@/backend/auth/auth.type'
 
@@ -19,11 +19,8 @@ const authApi = backendApi.injectEndpoints({
         try {
           const { data } = await queryFulfilled
           const { token, user } = data
-          console.log(token, user)
           dispatch(setCredentials({ token, user }))
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
       },
     }),
 
@@ -46,11 +43,10 @@ const authApi = backendApi.injectEndpoints({
       },
     }),
 
-    refresh: builder.mutation<TAuthState, void>({
+    refresh: builder.query<TAuthState, void>({
       query: () => ({
         url: '/refresh',
         method: 'GET',
-        credentials: 'include',
       }),
 
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -58,12 +54,25 @@ const authApi = backendApi.injectEndpoints({
           const { data } = await queryFulfilled
           const { token, user } = data
           dispatch(setCredentials({ token, user }))
-        } catch (error) {
-          console.log(error)
+        } catch (error) {}
+      },
+    }),
+
+    signout: builder.mutation<void, void>({
+      query: () => {
+        return {
+          url: '/signout',
+          method: 'GET',
         }
+      },
+
+      async onQueryStarted(arg, { dispatch }) {
+        dispatch(logout())
       },
     }),
   }),
 })
 
-export const { useSignupMutation, useSigninMutation } = authApi
+export const { useSignupMutation, useSigninMutation, useRefreshQuery } = authApi
+
+export const { refresh, signout } = authApi.endpoints

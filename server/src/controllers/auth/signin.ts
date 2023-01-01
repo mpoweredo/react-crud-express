@@ -46,7 +46,7 @@ const signin = async (req: CustomRequest<TSignin>, res: CustomResponse) => {
       user,
       process.env.ACCESS_TOKEN_SECRET as string,
       {
-        expiresIn: '20m',
+        expiresIn: '60d',
       }
     )
 
@@ -54,7 +54,7 @@ const signin = async (req: CustomRequest<TSignin>, res: CustomResponse) => {
       user,
       process.env.REFRESH_TOKEN_SECRET as string,
       {
-        expiresIn: '7d',
+        expiresIn: '90d',
       }
     )
 
@@ -62,7 +62,7 @@ const signin = async (req: CustomRequest<TSignin>, res: CustomResponse) => {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      maxAge: 604800,
+      maxAge: 7776000,
     })
 
     res.json({

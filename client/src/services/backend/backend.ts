@@ -1,65 +1,59 @@
-import {
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-  fetchBaseQuery,
-  FetchBaseQueryError,
-} from '@reduxjs/toolkit/query/react'
+import { createApi } from '@reduxjs/toolkit/query/react'
+import { HYDRATE } from 'next-redux-wrapper'
+import { axiosBaseQuery } from '@/backend/axiosBaseQuery'
 import { RootState } from '../../store/store'
-import { logout, setCredentials } from '../../store/auth/authSlice'
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:5000/',
-  credentials: 'include',
-  prepareHeaders(headers, { getState }) {
-    const token = (getState() as RootState).auth.token
-
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`)
-    }
-
-    return headers
-  },
-})
-
-const baseQueryWithReauth: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions)
-
-  console.log(result)
-
-  // TODO FIX TYPOS
-  if (result.error && result.error.originalStatus === 401) {
-    console.log('sending refresh token')
-
-    const refreshResult = await baseQuery('/refresh', api, extraOptions)
-
-    console.log(refreshResult)
-
-    console.log('asdasd', refreshResult)
-
-    if ('data' in refreshResult) {
-      // TODO FIX TYPOS
-      api.dispatch(setCredentials({ ...refreshResult.data }))
-
-      result = await baseQuery(args, api, extraOptions)
-    } else {
-      api.dispatch(logout())
-
-      return refreshResult
-    }
-  }
-
-  return result
-}
 
 const backendApi = createApi({
-  baseQuery: baseQueryWithReauth,
-  endpoints: () => ({}),
+  baseQuery: axiosBaseQuery({
+    baseUrl: 'http://localhost:5000',
+    prepareHeaders: (api) => {
+      const headers: Record<string, string> = {
+        accept: 'application/json',
+      }
+
+      const state = api.getState() as RootState
+
+      const token = state.auth.token
+
+      console.log(token)
+
+      const checkIsClientSide = () =>
+        !!(
+          typeof window !== 'undefined' &&
+          window.document &&
+          window.document.createElement
+        )
+
+      if (checkIsClientSide()) {
+        if (token) {
+          headers.authorization = token
+        }
+
+        return headers
+      }
+
+      // // find any cookies in the request
+      // let cookies: Partial<{ [key: string]: string }> = {}
+      // if ('req' in ctx && ctx.req && 'cookies' in ctx.req && ctx.req.cookies) {
+      //   cookies = ctx.req.cookies
+      // }
+      //
+      // const token = cookies['jwt']
+      //
+      // if (token) {
+      //   headers.authorization = token
+      // }
+
+      return headers
+    },
+  }),
+  extractRehydrationInfo: (action, { reducerPath }) => {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath]
+    }
+  },
   tagTypes: ['Todos'],
+  endpoints: () => ({}),
 })
 
 export { backendApi }
