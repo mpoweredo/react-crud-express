@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/index.ts"
+    "dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/index.ts",
+    "generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
