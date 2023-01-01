@@ -8,7 +8,6 @@ const verifyJWT = (req: Request, res: CustomResponse, next: NextFunction) => {
   if (!token) return res.sendStatus(403)
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (error: any) => {
-    console.log(error)
     if (error) return res.sendStatus(403)
 
     next()

@@ -21,8 +21,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   })
 
   const authCheck = useCallback(() => {
-    console.log(token)
-    console.log(data)
     const isProtectedRoute = PROTECTED_PATHS.includes(router.pathname)
     const isAuthRoute = AUTH_PATHS.includes(router.pathname)
 

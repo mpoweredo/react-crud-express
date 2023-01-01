@@ -15,8 +15,6 @@ const backendApi = createApi({
 
       const token = state.auth.token
 
-      console.log(token)
-
       const checkIsClientSide = () =>
         !!(
           typeof window !== 'undefined' &&

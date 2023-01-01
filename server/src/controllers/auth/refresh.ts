@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import jwt, { VerifyErrors } from 'jsonwebtoken'
+import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken'
 import { TUserData } from './auth.type'
 import { db } from '@/db'
 
@@ -11,18 +11,18 @@ const refreshToken = async (req: Request, res: Response) => {
   jwt.verify(
     refreshTokenCookie,
     process.env.REFRESH_TOKEN_SECRET as string,
-
-    // @ts-expect-error todo: fix ts errors
-    async (error: VerifyErrors | null, decoded: TUserData) => {
-      if (error) {
+    async (error, decoded) => {
+      if (error || !decoded) {
         res.sendStatus(401)
 
         return
       }
 
+      const { email } = decoded as TUserData
+
       const foundUser = await db.user.findFirst({
         where: {
-          email: decoded.email,
+          email,
         },
       })
 
