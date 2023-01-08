@@ -10,6 +10,7 @@ type TSignin = {
 }
 
 type TUserData = {
+  id: number
   name: string
   email: string
 }

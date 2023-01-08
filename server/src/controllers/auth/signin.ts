@@ -32,7 +32,7 @@ const signin = async (req: CustomRequest<TSignin>, res: CustomResponse) => {
         description: 'Credentials are invalid!',
       })
 
-    const { password: hashedPassword, ...user } = foundUser
+    const { password: hashedPassword } = foundUser
 
     const isPasswordCorrect = compareSync(password, hashedPassword)
 
@@ -42,8 +42,15 @@ const signin = async (req: CustomRequest<TSignin>, res: CustomResponse) => {
         description: 'Credentials are invalid!',
       })
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _, ...user } = foundUser
+
+    const token = {
+      id: user.id,
+    }
+
     const accessToken = jwt.sign(
-      user,
+      token,
       process.env.ACCESS_TOKEN_SECRET as string,
       {
         expiresIn: '60d',
@@ -51,7 +58,7 @@ const signin = async (req: CustomRequest<TSignin>, res: CustomResponse) => {
     )
 
     const refreshToken = jwt.sign(
-      user,
+      token,
       process.env.REFRESH_TOKEN_SECRET as string,
       {
         expiresIn: '90d',

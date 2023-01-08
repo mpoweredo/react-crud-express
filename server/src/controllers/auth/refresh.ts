@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { TUserData } from './auth.type'
 import { db } from '@/db'
 
@@ -18,11 +18,11 @@ const refreshToken = async (req: Request, res: Response) => {
         return
       }
 
-      const { email } = decoded as TUserData
+      const { id } = decoded as TUserData
 
       const foundUser = await db.user.findFirst({
         where: {
-          email,
+          id,
         },
       })
 
@@ -31,13 +31,16 @@ const refreshToken = async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password: _, ...user } = foundUser
 
+      const token = {
+        id: user.id,
+      }
+
       const accessToken = jwt.sign(
-        {
-          email: user.email,
-        },
+        token,
         process.env.ACCESS_TOKEN_SECRET as string,
         { expiresIn: '60d' }
       )
+
       res.status(200).json({ token: accessToken, user })
     }
   )

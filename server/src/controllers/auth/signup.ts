@@ -44,10 +44,15 @@ const signup = async (req: CustomRequest<TSignup>, res: CustomResponse) => {
       },
     })
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...user } = createdUser
 
+    const token = {
+      id: user.id,
+    }
+
     const accessToken = jwt.sign(
-      user,
+      token,
       process.env.ACCESS_TOKEN_SECRET as string,
       {
         expiresIn: '60d',
@@ -55,7 +60,7 @@ const signup = async (req: CustomRequest<TSignup>, res: CustomResponse) => {
     )
 
     const refreshToken = jwt.sign(
-      user,
+      token,
       process.env.REFRESH_TOKEN_SECRET as string,
       {
         expiresIn: '90d',
