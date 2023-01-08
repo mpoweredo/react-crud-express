@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon -e ts,js --exec ts-node -r tsconfig-paths/register ./src/index.ts",
     "start": "node build/index.js",
-    "build": "yarn migrate && tsc -p tsconfig.json && tsc-alias -p tsconfig.json --resolve-full-paths",
+    "build": "yarn migrate && node esbuild.config.js",
     "migrate": "prisma generate"
   },
   "keywords": [],
@@ -22,6 +22,8 @@
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "@zerollup/ts-transform-paths": "^1.7.18",
+    "esbuild": "^0.16.15",
+    "esbuild-node-externals": "^1.6.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -31,8 +33,6 @@
     "prisma": "^4.7.1",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.2",
-    "tsconfig-paths": "^4.1.2",
-    "ttypescript": "^1.5.15",
     "typescript": "^4.9.3"
   },
   "dependencies": {

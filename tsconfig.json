@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "moduleResolution": "node",
-      "target": "es5",
+      "target": "ES2015",
       "module": "CommonJS",
       "lib": ["es6"],
       "allowJs": true,
@@ -16,12 +16,13 @@
       "isolatedModules": false,
       "useUnknownInCatchVariables": false,
       "inlineSourceMap": true,
-      "baseUrl": "./",
+      "baseUrl": ".",
       "paths": {
         "@/db": ["src/utils/db.server.ts"],
         "@/config/*": ["src/config/*"],
         "@/types/*": ["src/types/*"],
         "@/routes/*": ["src/routes/*"],
+        "@/controllers/*": ["src/controllers/*"]
       }
     },
     "include": ["src/**/*.ts"],
