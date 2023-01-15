@@ -29,6 +29,8 @@ export const todosApi = backendApi.injectEndpoints({
 
     addTodo: builder.mutation<void, { newTodo: INewTodo }>({
       query: ({ newTodo }) => {
+        console.log(newTodo)
+
         return {
           url: '/todo',
           method: EMethod.POST,

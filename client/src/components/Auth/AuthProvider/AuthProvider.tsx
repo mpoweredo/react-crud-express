@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import { useRefreshQuery } from '@/backend/auth/auth.api'
 import { useAppSelector } from '../../../store/hooks'
 import { selectUser } from '../../../store/auth/authSlice'
@@ -7,23 +7,28 @@ import { Flex, Spinner } from '@chakra-ui/react'
 
 const AUTH_PATHS = ['/signin', '/signup']
 
-const PROTECTED_PATHS = ['/protected']
+const PROTECTED_PATHS = ['/protected', '/']
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthorized, setIsAuthorized] = useState(false)
 
   const router = useRouter()
 
+  const isProtectedRoute = useMemo(() => {
+    return PROTECTED_PATHS.includes(router.pathname)
+  }, [router])
+
+  const isAuthRoute = useMemo(() => {
+    return AUTH_PATHS.includes(router.pathname)
+  }, [router])
+
   const { token } = useAppSelector(selectUser)
 
   const { isLoading, data } = useRefreshQuery(undefined, {
-    skip: !!token,
+    skip: !!token || (!isAuthRoute && !isProtectedRoute),
   })
 
   const authCheck = useCallback(() => {
-    const isProtectedRoute = PROTECTED_PATHS.includes(router.pathname)
-    const isAuthRoute = AUTH_PATHS.includes(router.pathname)
-
     if (!isLoading) {
       if (token && isAuthRoute) {
         setIsAuthorized(false)

@@ -8,6 +8,26 @@ import {
   EAddTodoFields,
   TAddTodoFields,
 } from './AddTodo.validation'
+import MultiSelect from '@/components/UI/MultiSelect/MultiSelect'
+
+const values = [
+  {
+    value: 1,
+    label: 'important',
+  },
+  {
+    value: 2,
+    label: 'less important',
+  },
+  {
+    value: 4,
+    label: 'less important',
+  },
+  {
+    value: 3,
+    label: 'less important',
+  },
+]
 
 const AddTodo = () => {
   const [addTodo, { isLoading }] = useAddTodoMutation()
@@ -16,13 +36,15 @@ const AddTodo = () => {
     initialValues: {
       title: '',
       completed: false,
+      tags: [],
     },
-    onSubmit: async ({ title, completed }, { resetForm }) => {
+    onSubmit: async ({ title, completed, tags }, { resetForm }) => {
       if (completed === undefined) return
 
       const newTodo = {
         title,
         completed,
+        tags,
       }
 
       await addTodo({ newTodo })
@@ -40,7 +62,7 @@ const AddTodo = () => {
             <Stack
               direction={['column', 'row']}
               minH={'90px'}
-              maxW={'33rem'}
+              maxW={'40rem'}
               w={'full'}
               bg={'brand.secondary'}
               rounded={'lg'}
@@ -58,10 +80,16 @@ const AddTodo = () => {
                   />
                 </Flex>
               </Center>
+              <MultiSelect
+                width={['100%', '16rem']}
+                values={values}
+                name={EAddTodoFields.TAGS}
+              />
               <Button
                 isLoading={isLoading}
                 type={'submit'}
                 size={'md'}
+                minW={'6rem'}
                 w={['full', 'auto']}
                 colorScheme={'green'}
               >

@@ -1,8 +1,9 @@
-import { object, string, boolean, InferType } from 'yup'
+import { object, string, boolean, InferType, array } from 'yup'
 
 enum EAddTodoFields {
   TITLE = 'title',
   COMPLETED = 'completed',
+  TAGS = 'tags',
 }
 
 const AddTodoValidation = object({
@@ -10,6 +11,7 @@ const AddTodoValidation = object({
     .min(1, 'Title is too short!')
     .required('Field cannot be empty!'),
   [EAddTodoFields.COMPLETED]: boolean(),
+  [EAddTodoFields.TAGS]: array().max(3),
 })
 
 type TAddTodoFields = InferType<typeof AddTodoValidation>
