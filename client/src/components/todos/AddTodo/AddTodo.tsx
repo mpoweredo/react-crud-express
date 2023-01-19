@@ -1,6 +1,9 @@
 import { Button, Center, Flex, Stack } from '@chakra-ui/react'
 import { Form, FormikProvider, useFormik } from 'formik'
-import { useAddTodoMutation } from 'src/services/backend/todos/todos.api'
+import {
+  useAddTodoMutation,
+  useGetTodoTagsQuery,
+} from 'src/services/backend/todos/todos.api'
 import Checkbox from '../../UI/Checkbox/Checkbox'
 import Input from '../../UI/Input/Input'
 import {
@@ -9,28 +12,27 @@ import {
   TAddTodoFields,
 } from './AddTodo.validation'
 import MultiSelect from '@/components/UI/MultiSelect/MultiSelect'
-
-const values = [
-  {
-    value: 1,
-    label: 'important',
-  },
-  {
-    value: 2,
-    label: 'less important',
-  },
-  {
-    value: 4,
-    label: 'less important',
-  },
-  {
-    value: 3,
-    label: 'less important',
-  },
-]
-
+import { useMemo } from 'react'
+import { TMultiSelectOption } from '@/components/UI/MultiSelect/MultiSelect.type'
 const AddTodo = () => {
   const [addTodo, { isLoading }] = useAddTodoMutation()
+
+  const { data: tagsData } = useGetTodoTagsQuery()
+
+  console.log(tagsData)
+
+  const tags = useMemo<TMultiSelectOption[]>(() => {
+    if (!tagsData) return []
+
+    console.log(tagsData)
+
+    return tagsData.map(({ id, label }) => {
+      return {
+        value: id,
+        label,
+      }
+    })
+  }, [tagsData])
 
   const addTodoFormik = useFormik<TAddTodoFields>({
     initialValues: {
@@ -82,8 +84,9 @@ const AddTodo = () => {
               </Center>
               <MultiSelect
                 width={['100%', '16rem']}
-                values={values}
+                values={tags}
                 name={EAddTodoFields.TAGS}
+                isLoading={isLoading}
               />
               <Button
                 isLoading={isLoading}

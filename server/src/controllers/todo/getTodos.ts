@@ -12,6 +12,9 @@ const getTodos = async (req: Request, res: Response) => {
     where: {
       userId: id,
     },
+    include: {
+      tags: true,
+    },
   })
 
   res.status(200).json(todos)

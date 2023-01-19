@@ -25,6 +25,7 @@ const MultiSelect = ({
   label,
   isErrorMessageVisible = false,
   width = '210px',
+  isLoading,
 }: IMultiSelectProps) => {
   const [field, { error, touched }, { setValue, setTouched }] =
     useField<TMultiSelectValues>(name)
@@ -98,6 +99,7 @@ const MultiSelect = ({
 
         {isOpen && (
           <MultiSelectDropdown
+            isLoading={isLoading}
             values={values}
             field={field}
             setValue={(value: TMultiSelectValues) => setValue(value)}

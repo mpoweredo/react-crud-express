@@ -1,4 +1,4 @@
-import { Button, MenuList, Stack } from '@chakra-ui/react'
+import { Button, Center, MenuList, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { TMultiSelectValues } from '@/components/UI/MultiSelect/MultiSelect.type'
 import { FieldInputProps } from 'formik'
@@ -7,11 +7,13 @@ interface IMultiSelectDropdownProps {
   values: TMultiSelectValues
   field: FieldInputProps<TMultiSelectValues>
   setValue: (value: TMultiSelectValues) => void
+  isLoading?: boolean
 }
 
 const MultiSelectDropdown = ({
   values,
   field,
+  isLoading,
   setValue,
 }: IMultiSelectDropdownProps) => {
   return (
@@ -27,37 +29,45 @@ const MultiSelectDropdown = ({
       zIndex={10}
       top={'100%'}
     >
-      {values.map((item) => {
-        const isSelected = field.value.some(({ value }) => item.value === value)
+      {isLoading ? (
+        <Center flexGrow={1}>
+          <Text>Loading...</Text>
+        </Center>
+      ) : (
+        values.map((item) => {
+          const isSelected = field.value.some(
+            ({ value }) => item.value === value
+          )
 
-        return (
-          <Button
-            bg={isSelected ? 'gray.500' : 'gray.700'}
-            color={isSelected ? 'gray.300' : 'white'}
-            cursor={'pointer'}
-            _hover={{ bg: 'gray.600' }}
-            _active={{ bg: 'gray.500' }}
-            rounded={'sm'}
-            p={2.5}
-            role={'option'}
-            id={item.value.toString()}
-            key={item.value}
-            justifyContent={'flex-start'}
-            type={'button'}
-            onClick={() => {
-              if (field.value.some(({ value }) => value === item.value)) {
-                setValue(
-                  field.value.filter(({ value }) => item.value !== value)
-                )
-                return
-              }
-              setValue([...field.value, item])
-            }}
-          >
-            {item.label}
-          </Button>
-        )
-      })}
+          return (
+            <Button
+              bg={isSelected ? 'gray.500' : 'gray.700'}
+              color={isSelected ? 'gray.300' : 'white'}
+              cursor={'pointer'}
+              _hover={{ bg: 'gray.600' }}
+              _active={{ bg: 'gray.500' }}
+              rounded={'sm'}
+              p={2.5}
+              role={'option'}
+              id={item.value.toString()}
+              key={item.value}
+              justifyContent={'flex-start'}
+              type={'button'}
+              onClick={() => {
+                if (field.value.some(({ value }) => value === item.value)) {
+                  setValue(
+                    field.value.filter(({ value }) => item.value !== value)
+                  )
+                  return
+                }
+                setValue([...field.value, item])
+              }}
+            >
+              {item.label}
+            </Button>
+          )
+        })
+      )}
     </Stack>
   )
 }

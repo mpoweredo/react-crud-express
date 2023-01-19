@@ -12,12 +12,34 @@ const addTodo = async (req: CustomRequest<INewTodo>, res: Response) => {
   if (!title.trim())
     return res.status(400).json({ message: 'Title is required!' })
 
+  const { tags } = req.body
+
+  const selectedIds = tags.map(({ value }) => value)
+
+  const finalTagsIds = await db.tag
+    .findMany({
+      where: {
+        id: { in: selectedIds },
+      },
+    })
+    .then((values) =>
+      values.map(({ id }) => {
+        return { id }
+      })
+    )
+
   try {
     await db.todo.create({
       data: {
         title,
         completed,
         userId: id,
+        tags: {
+          connect: finalTagsIds,
+        },
+      },
+      include: {
+        tags: true,
       },
     })
 

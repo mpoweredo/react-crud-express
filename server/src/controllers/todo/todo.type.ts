@@ -1,6 +1,10 @@
 interface INewTodo {
   title: string
   completed: boolean
+  tags: {
+    label: string
+    value: number
+  }[]
 }
 
 interface ITodo {

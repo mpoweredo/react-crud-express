@@ -5,8 +5,11 @@ import { editTodo } from 'src/controllers/todo/editTodo'
 import { getTodo } from 'src/controllers/todo/getTodo'
 import { getTodos } from 'src/controllers/todo/getTodos'
 import { verifyJWT } from '../middlewares/verifyJWT'
+import { getTodoTags } from '@/controllers/todo/getTodoTags'
 
 const router = express.Router()
+
+router.route('/tags').get(getTodoTags)
 
 router.use(verifyJWT)
 

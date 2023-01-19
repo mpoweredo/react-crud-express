@@ -61,6 +61,14 @@ export const todosApi = backendApi.injectEndpoints({
       },
       invalidatesTags: ['Todos'],
     }),
+
+    getTodoTags: builder.query<{ id: number; label: string }[], void>({
+      query: () => {
+        return {
+          url: '/todo/tags',
+        }
+      },
+    }),
   }),
 })
 
@@ -70,7 +78,7 @@ export const {
   useDeleteTodoMutation,
   useGetTodoQuery,
   useEditTodoMutation,
-  util: { getRunningOperationPromises },
+  useGetTodoTagsQuery,
 } = todosApi
 
 export const { getTodos } = todosApi.endpoints

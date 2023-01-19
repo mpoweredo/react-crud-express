@@ -11,6 +11,7 @@ interface IMultiSelectProps {
   name: string
   label?: string
   width?: string | string[]
+  isLoading?: boolean
 }
 
 export type { IMultiSelectProps, TMultiSelectOption, TMultiSelectValues }

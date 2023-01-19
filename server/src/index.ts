@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import express, { Request, Response } from 'express'
+import express from 'express'
 import cors from 'cors'
 import { todoRoute } from './routes/todoRoutes'
 import { corsOptions } from './config/corsOptions'
