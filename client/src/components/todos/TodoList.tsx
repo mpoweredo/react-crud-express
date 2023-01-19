@@ -5,8 +5,6 @@ import TodoItem from './TodoItem/TodoItem'
 const TodoList = () => {
   const { data: todosData, isLoading } = useGetTodosQuery()
 
-  console.log(todosData)
-
   return (
     <Flex mt={5} p={0} h='auto'>
       <Center flexGrow={1} px={[3, 5]}>

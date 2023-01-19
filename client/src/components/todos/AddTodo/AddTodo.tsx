@@ -24,8 +24,6 @@ const AddTodo = () => {
   const tags = useMemo<TMultiSelectOption[]>(() => {
     if (!tagsData) return []
 
-    console.log(tagsData)
-
     return tagsData.map(({ id, label }) => {
       return {
         value: id,

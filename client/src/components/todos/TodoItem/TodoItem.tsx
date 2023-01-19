@@ -4,6 +4,8 @@ import {
   Flex,
   Heading,
   Stack,
+  Tag,
+  TagLabel,
   Text,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -12,7 +14,7 @@ import React from 'react'
 import { ITodoItem } from './TodoItem.type'
 import TodoItemEdit from './TodoItemEdit'
 
-const TodoItem = ({ id, completed, title, createdAt }: ITodoItem) => {
+const TodoItem = ({ id, completed, title, createdAt, tags }: ITodoItem) => {
   const { onOpen, isOpen, onClose } = useDisclosure()
 
   const [deleteTodo, { isLoading: isDeletingTodo }] = useDeleteTodoMutation()
@@ -26,7 +28,7 @@ const TodoItem = ({ id, completed, title, createdAt }: ITodoItem) => {
     <>
       <Flex
         rounded={'md'}
-        h='135px'
+        minH='140px'
         bg='brand.secondary'
         p={3}
         onClick={onOpen}
@@ -54,9 +56,27 @@ const TodoItem = ({ id, completed, title, createdAt }: ITodoItem) => {
                 Delete
               </Button>
             </Flex>
-            <Text color='whiteAlpha.400'>
-              created {format(parseISO(createdAt), 'dd MMM yyyy')}
-            </Text>
+            <Stack alignItems={'flex-end'}>
+              {tags.length > 0 && (
+                <Flex w={'full'} gap={2}>
+                  {tags.map(({ label, id }) => {
+                    return (
+                      <Tag
+                        colorScheme={'gray'}
+                        key={id}
+                        size={'sm'}
+                        variant={'solid'}
+                      >
+                        <TagLabel>{label}</TagLabel>
+                      </Tag>
+                    )
+                  })}
+                </Flex>
+              )}
+              <Text color='whiteAlpha.400'>
+                created {format(parseISO(createdAt), 'dd MMM yyyy')}
+              </Text>
+            </Stack>
           </Flex>
         </Stack>
       </Flex>
